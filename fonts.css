@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "BelleAllureCM-Fin";
+  src: local("BelleAllureCM-Fin"), local("BelleAllureCM Fin");
+}
+
+@font-face {
+  font-family: "BelleAllureCM-Gros";
+  src: local("BelleAllureCM-Gros"), local("BelleAllureCM Gros");
+}
