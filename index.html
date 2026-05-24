@@ -1,117 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Éditeur de Fluence</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="fonts.css">
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <div class="app-container">
-    <div class="left-panel">
-      <div class="header">
-        <h1>📖 Éditeur de Fluence</h1>
-        <p>Tests de lecture</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Éditeur de Fluence</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="fonts.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <div class="left-panel">
+        <div class="header">
+          <h1>📖 Éditeur de Fluence</h1>
+          <p>Tests de lecture</p>
+        </div>
+
+        <div class="left-content">
+          <div class="form-group">
+            <label for="title">Titre :</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="Ex: La poule et le pommier"
+              value="La petite fille aux allumettes"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="text">Texte :</label>
+            <textarea
+              id="text"
+              placeholder="Saisissez ou collez votre texte ici..."
+            >
+Le dernier soir de l’année, il faisait un froid glacial, il neigeait et il faisait déjà presque totalement nuit. Dans le crépuscule, une pauvre petite fille affamée marchait. Elle ne portait pas de chapeau et ses pieds nus étaient bleus de froid. Elle avait quitté la maison avec les pantoufles de sa mère, mais elle en avait perdu une et une brute avait pris l’autre.
+Dans son tablier, elle avait beaucoup d’allumettes. Elle n’avait encore rien vendu. C’est pourquoi elle n’osait pas rentrer chez elle, car il y avait probablement une raclée qui l’attendait là-bas, et il y faisait froid aussi. Les lumières brillaient à toutes les fenêtres des maisons et l’odeur de l’oie délicieusement rôtie flottait dans l’air. La neige tombait sur ses cheveux et elle se mit accroupie dans un coin entre deux maisons. Ses mains glacées sont très douloureuses.
+Si seulement elle osait allumer un bâton de soufre, elle pourrait se réchauffer les mains. Skrrrtttt le feu crachait et flambait. Il ressemblait à une petite bougie. Mais quelle étrange lumière… on aurait dit qu’elle était assise devant un beau poêle chaud. Oh, comme c’est agréable ! Puis la flamme s’éteignit et elle se retrouva dans le coin, dans le froid.
+            </textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="author">Source :</label>
+            <input
+              type="text"
+              id="author"
+              placeholder="Ex: Extrait de..."
+              value="Andersen"
+            />
+          </div>
+
+          <div class="settings-group">
+            <h3>⚙️ Paramètres</h3>
+            <div class="setting-item">
+              <label for="fontFamily">Police</label>
+              <select id="fontFamily">
+                <option value="Arial" selected>Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Verdana">Verdana</option>
+                <option value="BelleAllureCM-Fin">BelleAllureCM Fin</option>
+                <option value="BelleAllureCM-Gros">BelleAllureCM Gros</option>
+              </select>
+            </div>
+
+            <div class="setting-item">
+              <label for="fontSize">Taille</label>
+              <select id="fontSize">
+                <option value="10">10 pt</option>
+                <option value="11">11 pt</option>
+                <option value="12">12 pt</option>
+                <option value="13">13 pt</option>
+                <option value="14" selected>14 pt</option>
+                <option value="16">16 pt</option>
+                <option value="18">18 pt</option>
+              </select>
+            </div>
+
+            <div class="setting-item">
+              <label for="lineHeight">Interligne</label>
+              <select id="lineHeight">
+                <option value="1.0">Simple (1.0)</option>
+                <option value="1.15">1.15</option>
+                <option value="1.5" selected>1.5</option>
+                <option value="2.0">Double (2.0)</option>
+              </select>
+            </div>
+
+            <div class="setting-item">
+              <label for="lineWidth"
+                >Largeur: <span id="lineWidthValue">95</span>%</label
+              >
+              <input
+                type="range"
+                id="lineWidth"
+                min="60"
+                max="100"
+                value="95"
+                step="1"
+              />
+            </div>
+
+            <div class="setting-item setting-item-checkbox">
+              <label class="checkbox-label" for="countTitleWords">
+                <input type="checkbox" id="countTitleWords" />
+                Compter aussi les mots du titre dans le compteur de droite
+              </label>
+            </div>
+          </div>
+
+          <div class="word-count-box">
+            <div class="word-count-display" id="wordCount">0</div>
+            <div class="word-count-label">mots dans le texte</div>
+          </div>
+
+          <div class="button-group">
+            <button class="btn-pdf" onclick="generatePdf()">
+              📑 Générer le PDF
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div class="left-content">
-        <div class="form-group">
-          <label for="title">Titre :</label>
-          <input type="text" id="title" placeholder="Ex: La poule et le pommier" value="Mes vacances à Rumilly">
+      <div class="right-panel">
+        <div class="toolbar">
+          <span class="toolbar-label">Police</span>
+          <span
+            id="toolbarFont"
+            class="toolbar-value"
+            title="Lecture seule — modifier dans le panneau gauche"
+            >Arial</span
+          >
+          <span class="toolbar-divider"></span>
+          <span class="toolbar-label">Taille</span>
+          <span
+            id="toolbarSize"
+            class="toolbar-value"
+            title="Lecture seule — modifier dans le panneau gauche"
+            >14 pt</span
+          >
+          <span class="zoom-info">Aperçu en temps réel</span>
         </div>
 
-        <div class="form-group">
-          <label for="text">Texte :</label>
-          <textarea id="text" placeholder="Saisissez ou collez votre texte ici...">La deuxième semaine des vacances, je suis allée à Rumilly en Haute-Savoie avec ma maman et ma sœur. On a pris la route en voiture. Ma maman a roulé 7 heures. C'était très très long.
-On a fait deux pauses : une pour se dégourdir les jambes et une pour manger. Ma sœur a pris des photos. Il y avait des montagnes jeunes et des montagnes anciennes. Certaines étaient même enneigées. Elles étaient très belles.</textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="author">Source :</label>
-          <input type="text" id="author" placeholder="Ex: Extrait de..." value="Texte libre de Manel">
-        </div>
-
-        <div class="settings-group">
-          <h3>⚙️ Paramètres</h3>
-          <div class="setting-item">
-            <label for="fontFamily">Police</label>
-            <select id="fontFamily">
-              <option value="Arial" selected>Arial</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Courier New">Courier New</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Verdana">Verdana</option>
-              <option value="BelleAllureCM-Fin">BelleAllureCM Fin</option>
-              <option value="BelleAllureCM-Gros">BelleAllureCM Gros</option>
-            </select>
+        <div class="preview-container">
+          <div class="preview-page">
+            <div class="preview-title-row">
+              <div class="line-number-column">
+                <span class="line-number">&nbsp;</span>
+              </div>
+              <div class="text-column">
+                <div class="preview-title" id="previewTitle">
+                  La petite fille aux allumettes
+                </div>
+              </div>
+              <div class="numbers-column">
+                <span
+                  class="number-line preview-title-count"
+                  id="previewTitleCount"
+                  >&nbsp;</span
+                >
+              </div>
+            </div>
+            <div class="text-display"></div>
+            <div class="preview-footer">
+              <p class="author" id="previewAuthor"></p>
+              <p>Nombre de mots lus correctement : ___________</p>
+              <p>
+                Nombre de mots du texte : <span id="previewWordCount">0</span>
+              </p>
+            </div>
           </div>
-
-          <div class="setting-item">
-            <label for="fontSize">Taille</label>
-            <select id="fontSize">
-              <option value="10">10 pt</option>
-              <option value="11">11 pt</option>
-              <option value="12">12 pt</option>
-              <option value="13">13 pt</option>
-              <option value="14" selected>14 pt</option>
-              <option value="16">16 pt</option>
-              <option value="18">18 pt</option>
-            </select>
-          </div>
-
-          <div class="setting-item">
-            <label for="lineHeight">Interligne</label>
-            <select id="lineHeight">
-              <option value="1.0">Simple (1.0)</option>
-              <option value="1.15">1.15</option>
-              <option value="1.5" selected>1.5</option>
-              <option value="2.0">Double (2.0)</option>
-            </select>
-          </div>
-
-          <div class="setting-item">
-            <label for="lineWidth">Largeur: <span id="lineWidthValue">95</span>%</label>
-            <input type="range" id="lineWidth" min="60" max="100" value="95" step="1">
-          </div>
-        </div>
-
-        <div class="word-count-box">
-          <div class="word-count-display" id="wordCount">0</div>
-          <div class="word-count-label">mots dans le texte</div>
-        </div>
-
-        <div class="button-group">
-          <button class="btn-pdf" onclick="generatePdf()">📑 Générer le PDF</button>
         </div>
       </div>
     </div>
-
-    <div class="right-panel">
-      <div class="toolbar">
-        <span class="toolbar-label">Police</span>
-        <span id="toolbarFont" class="toolbar-value" title="Lecture seule — modifier dans le panneau gauche">Arial</span>
-        <span class="toolbar-divider"></span>
-        <span class="toolbar-label">Taille</span>
-        <span id="toolbarSize" class="toolbar-value" title="Lecture seule — modifier dans le panneau gauche">14 pt</span>
-        <span class="zoom-info">Aperçu en temps réel</span>
-      </div>
-
-      <div class="preview-container">
-        <div class="preview-page">
-          <div class="preview-title" id="previewTitle">Mes vacances à Rumilly</div>
-          <div class="text-display"></div>
-          <div class="preview-footer">
-            <p class="author" id="previewAuthor"></p>
-            <p>Nombre de mots lus correctement : ___________</p>
-            <p>Nombre de mots du texte : <span id="previewWordCount">0</span></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
